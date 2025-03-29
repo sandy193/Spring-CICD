@@ -27,7 +27,7 @@ stages{
    stage('sonarqube analysis') {
         steps {
             script {
-                withSonarQubeEnv(credentailsId: 'sonar-secret') {
+                withSonarQubeEnv(credentialsId: 'sonar-secret')  {
                     sh 'mvn sonar:sonar'
                 }
             }
