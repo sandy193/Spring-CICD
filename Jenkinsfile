@@ -46,7 +46,6 @@ stages{
         steps {
             script {
                 sh 'mvn test'
-                sh 'docker --version'
             }
         }
 }
