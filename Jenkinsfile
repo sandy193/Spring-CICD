@@ -43,6 +43,7 @@ stages {
     steps {
         sh "trivy fs --format table -o trivy-fs-reports.html ."
     }
+    }
 
     stage('Build and Push Docker Image') {
       environment {
