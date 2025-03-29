@@ -7,7 +7,7 @@ tools{
 }   
 
 environment {
-    DOCKER_IMAGE = 'sandydocker19/SpringCICD:${BUILD_NUMBER}'
+    DOCKER_IMAGE = "sandydocker19/SpringCICD:${BUILD_NUMBER}"
 }
 
 stages{
