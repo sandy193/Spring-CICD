@@ -9,8 +9,18 @@ tools {
  environment {
         DOCKER_IMAGE = "sandydocker19/spring-cicd:${BUILD_NUMBER}"
         
-    }   
+    }  
+    
 stages {
+
+    stage('Cleanup Workspace') {
+        steps {
+            script {
+                CleanWs()
+            }
+        }
+    }
+    
     stage("checkout"){
         steps{
             git branch: 'main', credentialsId: 'github-secret', url: 'https://github.com/sandy193/Spring-CICD.git'
