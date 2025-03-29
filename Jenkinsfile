@@ -53,6 +53,7 @@ stages{
    stage('Build and Push Docker Image') {
         environment {
             REGISTRY_CREDENTIALS =  credentials('docker-secret')
+            PATH = "/opt/homebrew/bin:${env.PATH}"
         }
         steps {
             script {
