@@ -52,7 +52,8 @@ stages{
 
    stage('File system scan') {
     steps {
-        sh "/opt/homebrew/bin/trivy fs --format table -o trivy-fs-reports.html ."
+      sh  "/opt/homebrew/bin/trivy fs --skip-db-update --format table -o trivy-fs-reports.html ."
+
     }
 }
 
