@@ -8,7 +8,7 @@ tools {
 }
  environment {
         DOCKER_IMAGE = "sandydocker19/spring-cicd:${BUILD_NUMBER}"
-         PATH = "/opt/homebrew/bin:${env.PATH}" 
+        
     }   
 stages {
     stage("checkout"){
@@ -39,6 +39,11 @@ stages {
         }
     }
 
+    stage('File system scan') {
+    steps {
+        sh "trivy fs --format table -o trivy-fs-reports.html ."
+    }
+
     stage('Build and Push Docker Image') {
       environment {
         REGISTRY_CREDENTIALS = credentials('docker-secret')
@@ -57,7 +62,7 @@ stages {
 
     stage('Docker Image Scan') {
        steps {
-                sh "/opt/homebrew/bin/trivy image --format table -o trivy-image-report.html ${DOCKER_IMAGE}"
+                sh "trivy image --format table -o trivy-image-report.html ${DOCKER_IMAGE}"
             }
         }
 
