@@ -8,6 +8,7 @@ tools {
 }
  environment {
         DOCKER_IMAGE = "sandydocker19/spring-cicd:${BUILD_NUMBER}"
+         PATH = "/opt/homebrew/bin:${env.PATH}" 
     }   
 stages {
     stage("checkout"){
