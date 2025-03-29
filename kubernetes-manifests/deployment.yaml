@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: spring-app
-          image: github-spring-cicd:2
+          image: spring-cicd:1
           ports:
             - containerPort: 9090
