@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: spring-app
-          image: spring-cicd:1
+          image: sandydocker19/spring-cicd:5
           ports:
             - containerPort: 9090
