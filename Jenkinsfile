@@ -69,7 +69,7 @@ stages{
 
    stage('Docker Image Scan') {
      steps {
-        sh '/opt/homebrew/bin/trivy image --format table -o trivy-image-reports.html ${DOCKER_IMAGE}'
+        sh "/opt/homebrew/bin/trivy image --format table -o trivy-image-reports.html ${DOCKER_IMAGE}"
     }
 }
 }
