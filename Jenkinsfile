@@ -14,7 +14,7 @@ stages{
     stage('Cleanup Workspace') {
         steps {
             script {
-                CleanWs()
+                cleanWs()
             }
         }
     }
