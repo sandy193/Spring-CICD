@@ -20,7 +20,7 @@ stages{
     }
    stage('checkout') {
         steps {
-            git branch: 'main', url: 'https://github.com/sandy193/Spring-CICD.git'
+            git branch: 'main',credentialsId: 'github-secret', url: 'https://github.com/sandy193/Spring-CICD.git'
         }
    }
 
