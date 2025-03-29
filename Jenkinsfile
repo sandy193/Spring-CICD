@@ -50,13 +50,6 @@ stages{
         }
 }
 
-   stage('File system scan') {
-    steps {
-      sh  "/opt/homebrew/bin/trivy fs --format table -o trivy-fs-reports.html ."
-
-    }
-}
-
    stage('Build and Push Docker Image') {
         environment {
             REGISTRY_CREDENTIALS =  credentials('docker-secret')
