@@ -1,76 +1,68 @@
+
 pipeline {
     agent any
 
-tools{
+tools {
     jdk 'Jdk17'
     maven 'Maven3'
-}   
-
-environment {
-    DOCKER_IMAGE = "sandydocker19/spring-cicd:${BUILD_NUMBER}"
 }
-
-stages{
-    stage('Cleanup Workspace') {
-        steps {
-            script {
-                cleanWs()
-            }
+ environment {
+        DOCKER_IMAGE = "sandydocker19/spring-cicd:${BUILD_NUMBER}"
+    }   
+stages {
+    stage("checkout"){
+        steps{
+            git branch: 'main', credentialsId: 'github-secret', url: 'https://github.com/sandy193/Spring-CICD.git'
         }
     }
-   stage('checkout') {
-        steps {
-            git branch: 'main',credentialsId: 'github-secret', url: 'https://github.com/sandy193/Spring-CICD.git'
-        }
-   }
 
-   stage('sonarqube analysis') {
+    stage("build application"){
+        steps{
+            sh 'mvn clean package'
+        }
+    }
+
+    stage("test application"){
+        steps{
+            sh 'mvn test'
+        }
+    }
+
+    stage("sonarqube analysis"){
         steps {
             script {
-                withSonarQubeEnv(credentialsId: 'sonar-secret')  {
+                withSonarQubeEnv(credentialsId: 'sonar-secret'){
                     sh 'mvn sonar:sonar'
                 }
             }
         }
-}
-
-   stage('Build') {
-        steps {
-            script {
-                sh 'mvn clean package -DskipTests'
-            }
-        }
-}
-
-   stage('Unit Test') {
-        steps {
-            script {
-                sh 'mvn test'
-            }
-        }
-}
-
-   stage('Build and Push Docker Image') {
-        environment {
-            REGISTRY_CREDENTIALS =  credentials('docker-secret')
-            PATH = "/opt/homebrew/bin:${env.PATH}"
-        }
-        steps {
-            script {
-                 sh 'docker context use default'  
-                sh "docker build -t ${DOCKER_IMAGE} ."
-                def dockerImage = docker.image("${DOCKER_IMAGE}")
-                docker.withRegistry('https://index.docker.io/v1/', "docker-secret") {
-                    dockerImage.push()
-                }
-            }
-        }
     }
 
-   stage('Docker Image Scan') {
-     steps {
-        sh "/opt/homebrew/bin/trivy image --format table -o trivy-image-reports.html ${DOCKER_IMAGE}"
+    stage('Build and Push Docker Image') {
+      environment {
+        REGISTRY_CREDENTIALS = credentials('docker-secret')
+      }
+      steps {
+        script {
+            sh 'docker context use default'  
+            sh "docker build -t ${DOCKER_IMAGE} ."
+            def dockerImage = docker.image("${DOCKER_IMAGE}")
+            docker.withRegistry('https://index.docker.io/v1/', "docker-secret") {
+                dockerImage.push()
+            }
+        }
+      }
     }
-}
-}
+
+    stage('Docker Image Scan') {
+       steps {
+                sh "/opt/homebrew/bin/trivy image --format table -o trivy-image-report.html ${DOCKER_IMAGE}"
+            }
+        }
+
+    
+
+    
+  
+    }   
 }
