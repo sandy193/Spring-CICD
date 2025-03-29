@@ -8,7 +8,6 @@ tools{
 
 environment {
     DOCKER_IMAGE = 'sandydocker19/SpringCICD:${BUILD_NUMBER}'
-     JAVA_HOME = '/opt/homebrew/opt/openjdk@17'
 }
 
 stages{
